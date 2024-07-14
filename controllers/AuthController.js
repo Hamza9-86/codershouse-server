@@ -30,6 +30,7 @@ exports.sendOtp = async (req, res) => {
       message: "Otp sent successfully",
       hash: `${hash}.${expires}`,
       email,
+      otp
     });
   } catch (error) {
     return res.status(500).json({
@@ -83,18 +84,18 @@ exports.verifyOtp = async (req, res) => {
       expiresIn: "1y",
     });
 
-    try {
-      await Refresh.create({
-        token: refreshToken,
-        userId: user._id,
-      });
-    } catch (error) {
-      return res.status(500).json({
-        success: false,
-        message: error.message,
-        error: "Error in storing refresh token",
-      });
-    }
+    // try {
+    //   await Refresh.create({
+    //     token: refreshToken,
+    //     userId: user._id,
+    //   });
+    // } catch (error) {
+    //   return res.status(500).json({
+    //     success: false,
+    //     message: error.message,
+    //     error: "Error in storing refresh token",
+    //   });
+    // }
     // res.cookie("token", token, options).status(200).json({
     //   success: true,
     //   token,
@@ -139,18 +140,18 @@ exports.refresh = async (req, res) => {
       return res.status(401).json({ message: "Invalid Token while verifying" });
     }
     // Check if token is in db
-    try {
-      const tokenRecord = await Refresh.findOne({
-        // token: refreshTokenFromCookie,
-        userId: userData._id,
-      }).sort({ createdAt: -1 });
-      //console.log(`refreshToken from db`,tokenRecord,`\nrefresh token`,refreshTokenFromCookie);
-      if (!tokenRecord) {
-        return res.status(401).json({ message: "Invalid token from db" });
-      }
-    } catch (err) {
-      return res.status(500).json({ message: "Internal error" });
-    }
+    // try {
+    //   const tokenRecord = await Refresh.findOne({
+    //     // token: refreshTokenFromCookie,
+    //     userId: userData._id,
+    //   }).sort({ createdAt: -1 });
+    //   //console.log(`refreshToken from db`,tokenRecord,`\nrefresh token`,refreshTokenFromCookie);
+    //   if (!tokenRecord) {
+    //     return res.status(401).json({ message: "Invalid token from db" });
+    //   }
+    // } catch (err) {
+    //   return res.status(500).json({ message: "Internal error" });
+    // }
     // check if valid user
     const user = await User.findOne({ _id: userData._id });
     if (!user) {
@@ -168,14 +169,14 @@ exports.refresh = async (req, res) => {
     });
 
     // Update refresh token
-    try {
-      await Refresh.findOneAndUpdate(
-        { _id: userData._id },
-        { token: refreshToken }
-      );
-    } catch (err) {
-      return res.status(500).json({ message: "Internal error" });
-    }
+    // try {
+    //   await Refresh.findOneAndUpdate(
+    //     { _id: userData._id },
+    //     { token: refreshToken }
+    //   );
+    // } catch (err) {
+    //   return res.status(500).json({ message: "Internal error" });
+    // }
     // put in cookie
     res.cookie("refreshToken", refreshToken, {
       maxAge: 1000 * 60 * 60 * 24 * 30,
