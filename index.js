@@ -11,10 +11,18 @@ const ACTIONS = require("./actions");
 const app = express();
 
 const server = require("http").createServer(app);
+let origin = "http://localhost:3000";
+console.log("server env", process.env.NODE_ENV);
+if (process.env.NODE_ENV === "production") {
+origin = process.env.FRONT_URL;
+}
+else if(process.env.NODE_ENV === "development"){
+  origin = origin;
+}
 
 const io = require("socket.io")(server, {
   cors: {
-    origin: process.env.FRONT_URL,
+    origin:origin,
     methods: ["GET", "POST"],
   },
 });
@@ -25,7 +33,7 @@ app.use(cookieParser());
 app.use(
   cors({
     credentials: true,
-    origin: process.env.FRONT_URL,
+    origin,
   })
 );
 app.use("/storage", express.static("storage"));
