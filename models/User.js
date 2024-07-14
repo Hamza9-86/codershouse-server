@@ -1,4 +1,13 @@
 const mongoose = require("mongoose");
+
+let origin = "http://localhost:5000";
+console.log("server env", process.env.NODE_ENV);
+if (process.env.NODE_ENV === "production") {
+origin = process.env.BASE_URL;
+}
+else if(process.env.NODE_ENV === "development"){
+  origin = origin;
+}
 const userSchema = new mongoose.Schema(
   {
     name: { type: String },
@@ -6,7 +15,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       get: (avatar) => {
         if (avatar) {
-          return `${process.env.BASE_URL}${avatar}`;
+          return `${origin}${avatar}`;
         }
         return avatar;
       },
