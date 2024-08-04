@@ -22,7 +22,8 @@ else if(process.env.NODE_ENV === "development"){
 
 const io = require("socket.io")(server, {
   cors: {
-    origin:origin,
+    origin,
+    optionSuccessStatus:200,
     methods: ["GET", "POST"],
   },
 });
