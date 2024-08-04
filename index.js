@@ -50,7 +50,7 @@ dbConnect();
 
 const socketUserMapping = {};
 io.on("connection", (socket) => {
-  //console.log("new connection ", socket.id);
+  console.log("new connection ", socket.id);
 
   socket.on(ACTIONS.JOIN, ({ roomId, user }) => {
     socketUserMapping[socket.id] = user;
