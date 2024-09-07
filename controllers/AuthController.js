@@ -132,10 +132,10 @@ exports.verifyOtp = async (req, res) => {
 exports.refresh = async (req, res) => {
   try {
     const { refreshToken: refreshTokenFromCookie } = req.cookies;
-    console.log("referesh ",req.cookies);
+    
     if (!refreshTokenFromCookie) {
 
-      return res.status(401).json({ message: "Refresh token not found in cookies" });
+      return res.status(401).json({ message: "Refresh token not found in cookies",cookie:req.cookies});
     }
     // check if token is valid
     let userData;
