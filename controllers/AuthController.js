@@ -104,7 +104,7 @@ exports.verifyOtp = async (req, res) => {
     // });
     res.cookie("refreshToken", refreshToken, {
       maxAge: 1000 * 60 * 60 * 24 * 30,
-      httpOnly: true,
+      //httpOnly: true,
     });
 
     res.cookie("accessToken", accessToken, {
@@ -136,6 +136,8 @@ exports.refresh = async (req, res) => {
     let userData;
     try {
       userData = jwt.verify(refreshTokenFromCookie, process.env.REFRESH_SECRET);
+      //console.log("userdata ",userData);
+      
     } catch (err) {
       return res.status(401).json({ message: "Invalid Token while verifying" });
     }

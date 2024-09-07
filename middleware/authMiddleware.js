@@ -3,6 +3,8 @@ const jwt = require("jsonwebtoken");
 exports.authMiddleware = async (req,res,next) => {
     try {
         const accessToken = req.cookies.accessToken;
+        //console.log("token" , accessToken);
+        
         if(!accessToken){
             return res.status(401).json({
                 success:false,
